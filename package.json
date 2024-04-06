@@ -1,6 +1,6 @@
 {
   "name": "media-probe",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "hwaterke",
   "license": "MIT",
@@ -17,5 +17,8 @@
     "@types/node": "^20",
     "prettier": "^3",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

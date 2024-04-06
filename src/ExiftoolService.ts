@@ -50,7 +50,7 @@ export class ExiftoolService {
     metadata: ExiftoolMetadata
     timeZone?: string
     fileTimeFallback: boolean
-  }): DateTime | null {
+  }): string | null {
     const tags = [
       EXIF_TAGS.SUB_SEC_DATE_TIME_ORIGINAL,
       // Creation date is the ideal tag for videos as it contains the timezone offset.
@@ -66,7 +66,7 @@ export class ExiftoolService {
           fallbackTimeZone: timeZone,
         })
         if (parsed && parsed.isValid) {
-          return parsed
+          return parsed.toISO()
         }
       }
     }
@@ -81,7 +81,7 @@ export class ExiftoolService {
           fallbackTimeZone: timeZone,
         })
         if (date && date.isValid) {
-          return date
+          return date.toISO()
         }
       } else {
         // Assuming UTC
@@ -90,7 +90,9 @@ export class ExiftoolService {
           fallbackTimeZone: 'utc',
         })
         if (date && date.isValid) {
-          return timeZone ? date.setZone(timeZone) : date.toLocal()
+          return timeZone
+            ? date.setZone(timeZone).toISO()
+            : date.toLocal().toISO()
         }
       }
     }
@@ -103,7 +105,7 @@ export class ExiftoolService {
         })
 
         if (date && date.isValid) {
-          return date
+          return date.toISO()
         }
       }
     }
