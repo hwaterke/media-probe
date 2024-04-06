@@ -3,7 +3,7 @@ import {constants, promises as FS} from 'node:fs'
 /**
  * Returns true if the provided path is a directory
  */
-export const isDirectory = async (path: string) => {
+export const isDirectory = async (path: string): Promise<boolean> => {
   const stat = await FS.lstat(path)
   return stat.isDirectory()
 }

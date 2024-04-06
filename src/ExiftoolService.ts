@@ -22,7 +22,7 @@ export class ExiftoolService {
       override: boolean
       ignoreMinorErrors: boolean
     }
-  }) {
+  }): Promise<string> {
     await ensureFileOrThrow(path)
 
     return await this.rawExiftool(
@@ -35,7 +35,7 @@ export class ExiftoolService {
     )
   }
 
-  private async rawExiftool(command: string) {
+  private async rawExiftool(command: string): Promise<string> {
     const fullCommand = `exiftool ${command}`
 
     if (this.config.debug) {
