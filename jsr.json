@@ -1,0 +1,5 @@
+{
+  "name": "@hwaterke/media-probe",
+  "version": "0.0.1",
+  "exports": "./src/ExiftoolService.ts"
+}

@@ -1,0 +1,20 @@
+{
+  "name": "media-probe",
+  "version": "0.0.1",
+  "description": "",
+  "author": "hwaterke",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "luxon": "^3.4.4"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3",
+    "@types/node": "^20",
+    "prettier": "^3",
+    "typescript": "^5"
+  }
+}
