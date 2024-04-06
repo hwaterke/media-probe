@@ -5,10 +5,12 @@ import {
   EXIF_DATE_TIME_FORMAT,
   EXIF_DATE_TIME_FORMAT_WITH_TZ,
   EXIF_DATE_TIME_REGEX,
+  EXIF_DATE_TIME_SUBSEC2_FORMAT_WITH_TZ,
+  EXIF_DATE_TIME_SUBSEC2_WITH_TZ_REGEX,
+  EXIF_DATE_TIME_SUBSEC3_FORMAT_WITH_TZ,
+  EXIF_DATE_TIME_SUBSEC3_WITH_TZ_REGEX,
   EXIF_DATE_TIME_SUBSEC_FORMAT,
-  EXIF_DATE_TIME_SUBSEC_FORMAT_WITH_TZ,
   EXIF_DATE_TIME_SUBSEC_REGEX,
-  EXIF_DATE_TIME_SUBSEC_WITH_TZ_REGEX,
   EXIF_DATE_TIME_WITH_TZ_REGEX,
   EXIF_DATE_TIME_WITH_UTC_REGEX,
   TZ_OFFSET_REGEX,
@@ -202,10 +204,11 @@ export class ExiftoolService {
   ): Promise<void> {
     if (
       !EXIF_DATE_TIME_WITH_TZ_REGEX.test(time) &&
-      !EXIF_DATE_TIME_SUBSEC_WITH_TZ_REGEX.test(time)
+      !EXIF_DATE_TIME_SUBSEC2_WITH_TZ_REGEX.test(time) &&
+      !EXIF_DATE_TIME_SUBSEC3_WITH_TZ_REGEX.test(time)
     ) {
       throw new Error(
-        `Invalid time provided ${time}. Please use ${EXIF_DATE_TIME_WITH_TZ_REGEX} or ${EXIF_DATE_TIME_SUBSEC_WITH_TZ_REGEX}`
+        `Invalid time provided ${time}. Please use ${EXIF_DATE_TIME_WITH_TZ_REGEX}, ${EXIF_DATE_TIME_SUBSEC2_WITH_TZ_REGEX} or ${EXIF_DATE_TIME_SUBSEC3_WITH_TZ_REGEX}`
       )
     }
 
@@ -294,8 +297,13 @@ export class ExiftoolService {
     date: string
     fallbackTimeZone?: string
   }): DateTime | null {
-    if (EXIF_DATE_TIME_SUBSEC_WITH_TZ_REGEX.test(date)) {
-      return DateTime.fromFormat(date, EXIF_DATE_TIME_SUBSEC_FORMAT_WITH_TZ, {
+    if (EXIF_DATE_TIME_SUBSEC3_WITH_TZ_REGEX.test(date)) {
+      return DateTime.fromFormat(date, EXIF_DATE_TIME_SUBSEC3_FORMAT_WITH_TZ, {
+        setZone: true,
+      })
+    }
+    if (EXIF_DATE_TIME_SUBSEC2_WITH_TZ_REGEX.test(date)) {
+      return DateTime.fromFormat(date, EXIF_DATE_TIME_SUBSEC2_FORMAT_WITH_TZ, {
         setZone: true,
       })
     }
