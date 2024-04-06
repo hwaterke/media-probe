@@ -129,5 +129,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-q# WebStorm project files
+# WebStorm project files
 .idea
+
+# macOS
+.DS_Store
