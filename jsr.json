@@ -1,7 +1,7 @@
 {
   "name": "@hwaterke/media-probe",
-  "version": "0.0.3",
-  "exports": "./src/ExiftoolService.ts",
+  "version": "0.0.4",
+  "exports": "./src/index.ts",
   "exclude": [
     ".github/**",
     ".prettierrc.json",
