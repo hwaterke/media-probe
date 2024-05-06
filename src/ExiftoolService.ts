@@ -136,7 +136,7 @@ export class ExiftoolService {
     longitude: number
   } | null> {
     const rawResult = await this.exiftool({
-      args: ['-GPSLatitude', '-GPSLongitude', '-json', '-c %.6f'],
+      args: ['-GPSLatitude', '-GPSLongitude', '-json', '-n'],
       path,
       options: {
         override: false,
@@ -145,25 +145,16 @@ export class ExiftoolService {
     })
 
     const result = JSON.parse(rawResult)[0]
-    const gpsLatitudeStr: string | undefined | null = result.GPSLatitude
-    const gpsLongitudeStr: string | undefined | null = result.GPSLongitude
-    const gpsLatitudeParts = gpsLatitudeStr?.match(/([\d.]+)\s*([ENSW])/)
-    const gpsLongitudeParts = gpsLongitudeStr?.match(/([\d.]+)\s*([ENSW])/)
+    const gpsLatitude: number | null = result.GPSLatitude
+    const gpsLongitude: number | null = result.GPSLongitude
 
-    if (!gpsLatitudeParts || !gpsLongitudeParts) {
+    if (gpsLatitude === null || gpsLongitude === null) {
       return null
     }
 
-    const latitude =
-      (gpsLatitudeParts[2] === 'S' ? -1 : 1) *
-      Number.parseFloat(gpsLatitudeParts[1])
-    const longitude =
-      (gpsLongitudeParts[2] === 'W' ? -1 : 1) *
-      Number.parseFloat(gpsLongitudeParts[1])
-
     return {
-      latitude,
-      longitude,
+      latitude: gpsLatitude,
+      longitude: gpsLongitude,
     }
   }
 
