@@ -68,7 +68,11 @@ export class ExiftoolService {
     metadata: ExiftoolMetadata
     timeZone?: string
     fileTimeFallback: boolean
-  }): string | null {
+  }): {
+    source: string
+    raw: string
+    iso: string
+  } | null {
     const tags = [
       EXIF_TAGS.SUB_SEC_DATE_TIME_ORIGINAL,
       // Creation date is the ideal tag for videos as it contains the timezone offset.
@@ -84,7 +88,11 @@ export class ExiftoolService {
           fallbackTimeZone: timeZone,
         })
         if (parsed && parsed.isValid) {
-          return parsed.toISO()
+          return {
+            source: tag,
+            raw: value,
+            iso: parsed.toISO()!,
+          }
         }
       }
     }
@@ -99,7 +107,11 @@ export class ExiftoolService {
           fallbackTimeZone: timeZone,
         })
         if (date && date.isValid) {
-          return date.toISO()
+          return {
+            source: EXIF_TAGS.QUICKTIME_CREATE_DATE,
+            raw: createDate,
+            iso: date.toISO()!,
+          }
         }
       } else {
         // Assuming UTC
@@ -108,9 +120,15 @@ export class ExiftoolService {
           fallbackTimeZone: 'utc',
         })
         if (date && date.isValid) {
-          return timeZone
+          const iso = timeZone
             ? date.setZone(timeZone).toISO()
             : date.toLocal().toISO()
+
+          return {
+            source: EXIF_TAGS.QUICKTIME_CREATE_DATE,
+            raw: createDate,
+            iso: iso!,
+          }
         }
       }
     }
@@ -123,12 +141,42 @@ export class ExiftoolService {
         })
 
         if (date && date.isValid) {
-          return date.toISO()
+          return {
+            source: EXIF_TAGS.FILE_MODIFICATION_DATE,
+            raw: fileModifyDate,
+            iso: date.toISO()!,
+          }
         }
       }
     }
 
     return null
+  }
+
+  /**
+   * Returns the UUID of the live photo source from the exif metadata of the photo provided
+   */
+  extractLivePhotoSourceUuidFromExif({
+    metadata,
+  }: {
+    metadata: ExiftoolMetadata
+  }): string | null {
+    return (
+      metadata[EXIF_TAGS.LIVE_PHOTO_UUID_PHOTO] ??
+      metadata[EXIF_TAGS.LIVE_PHOTO_UUID_PHOTO_MEDIA_GROUP] ??
+      null
+    )
+  }
+
+  /**
+   * Returns the UUID of the live photo target from the exif metadata of the video provided
+   */
+  extractLivePhotoTargetUuidFromExif({
+    metadata,
+  }: {
+    metadata: ExiftoolMetadata
+  }): string | null {
+    return metadata[EXIF_TAGS.LIVE_PHOTO_UUID_VIDEO] ?? null
   }
 
   async extractGpsExifMetadata(path: string): Promise<{
