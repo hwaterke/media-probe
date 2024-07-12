@@ -17,11 +17,12 @@ import {
 } from './utils.js'
 import {EXIF_TAGS, ExiftoolMetadata} from './types/ExiftoolMetadata.js'
 import {DateTime} from 'luxon'
+import type {Logger} from './types/Logger.js'
 
 const exec = promisify(callbackExec)
 
 export type ExiftoolServiceConfig = {
-  debug: boolean
+  logger?: Logger
 }
 
 export class ExiftoolService {
@@ -321,9 +322,7 @@ export class ExiftoolService {
   private async rawExiftool(command: string): Promise<string> {
     const fullCommand = `exiftool ${command}`
 
-    if (this.config.debug) {
-      console.log(fullCommand)
-    }
+    this.config.logger?.debug(fullCommand)
 
     const {stdout} = await exec(fullCommand)
     return stdout
