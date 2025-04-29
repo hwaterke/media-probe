@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "luxon": "^3.4.4"
+    "luxon": "^3.6.1"
   },
   "devDependencies": {
     "@types/luxon": "^3",
