@@ -13,6 +13,7 @@ export const EXIF_TAGS = {
   LIVE_PHOTO_UUID_VIDEO: 'QuickTime:Keys:ContentIdentifier',
   SUB_SEC_DATE_TIME_ORIGINAL: 'Composite:SubSecDateTimeOriginal',
   GPS_DATE_TIME: 'Composite:GPSDateTime',
+  ORIENTATION: 'EXIF:IFD0:Orientation',
 } as const
 
 export type ExiftoolMetadata = {
@@ -26,5 +27,6 @@ export type ExiftoolMetadata = {
   [EXIF_TAGS.LIVE_PHOTO_UUID_VIDEO]?: string
   [EXIF_TAGS.SUB_SEC_DATE_TIME_ORIGINAL]?: string
   [EXIF_TAGS.GPS_DATE_TIME]?: string
+  [EXIF_TAGS.ORIENTATION]?: string
   [key: string]: string | number | undefined
 }

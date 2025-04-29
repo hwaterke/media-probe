@@ -295,6 +295,27 @@ export class ExiftoolService {
     })
   }
 
+  async setOrientation(
+    path: string,
+    orientation: number,
+    options: {
+      override: boolean
+      ignoreMinorErrors: boolean
+    }
+  ): Promise<void> {
+    if (orientation < 1 || orientation > 8) {
+      throw new Error(
+        `Invalid orientation provided ${orientation}. Please use a number between 1 and 8`
+      )
+    }
+
+    await this.exiftool({
+      args: ['-P', `-orientation#=${orientation}`],
+      path,
+      options,
+    })
+  }
+
   async exiftool({
     args,
     path,
