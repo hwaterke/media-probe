@@ -38,6 +38,7 @@ export class ExiftoolService {
       options: {
         override: false,
         ignoreMinorErrors: false,
+        dryRun: false,
       },
     })
     return JSON.parse(rawResult)[0]
@@ -53,6 +54,7 @@ export class ExiftoolService {
       options: {
         override: false,
         ignoreMinorErrors: false,
+        dryRun: false,
       },
     })
     return JSON.parse(rawResult)[0]
@@ -190,6 +192,7 @@ export class ExiftoolService {
       options: {
         override: false,
         ignoreMinorErrors: false,
+        dryRun: false,
       },
     })
 
@@ -213,6 +216,7 @@ export class ExiftoolService {
     options: {
       override: boolean
       ignoreMinorErrors: boolean
+      dryRun: boolean
     }
   ): Promise<void> {
     // QuickTime CreationDate is set on Apple videos. As it contains the TZ it is the most complete field possible.
@@ -240,6 +244,7 @@ export class ExiftoolService {
       file: boolean
       override: boolean
       ignoreMinorErrors: boolean
+      dryRun: boolean
     }
   ): Promise<void> {
     if (
@@ -275,6 +280,7 @@ export class ExiftoolService {
     options: {
       override: boolean
       ignoreMinorErrors: boolean
+      dryRun: boolean
     }
   ): Promise<void> {
     if (!TZ_OFFSET_REGEX.test(offset)) {
@@ -301,6 +307,7 @@ export class ExiftoolService {
     options: {
       override: boolean
       ignoreMinorErrors: boolean
+      dryRun: boolean
     }
   ): Promise<void> {
     if (orientation < 1 || orientation > 8) {
@@ -326,24 +333,36 @@ export class ExiftoolService {
     options: {
       override: boolean
       ignoreMinorErrors: boolean
+      dryRun: boolean
     }
   }): Promise<string> {
     await ensureFileOrThrow(path)
 
-    return await this.rawExiftool(
-      [
+    return await this.rawExiftool({
+      command: [
         ...(options.override ? ['-overwrite_original'] : []),
         ...(options.ignoreMinorErrors ? ['-m'] : []),
         ...args,
         `"${path}"`,
-      ].join(' ')
-    )
+      ].join(' '),
+      dryRun: options.dryRun,
+    })
   }
 
-  private async rawExiftool(command: string): Promise<string> {
+  private async rawExiftool({
+    command,
+    dryRun,
+  }: {
+    command: string
+    dryRun: boolean
+  }): Promise<string> {
     const fullCommand = `exiftool ${command}`
 
-    this.config.logger?.debug(fullCommand)
+    this.config.logger?.command(fullCommand, dryRun)
+
+    if (dryRun) {
+      return ''
+    }
 
     const {stdout} = await exec(fullCommand)
     return stdout
