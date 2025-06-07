@@ -323,6 +323,23 @@ export class ExiftoolService {
     })
   }
 
+  async setGpsCoordinates(
+    path: string,
+    latitude: number,
+    longitude: number,
+    options: {
+      override: boolean
+      ignoreMinorErrors: boolean
+      dryRun: boolean
+    }
+  ): Promise<void> {
+    await this.exiftool({
+      args: ['-P', `-gpsposition="${latitude},${longitude}"`],
+      path,
+      options,
+    })
+  }
+
   async exiftool({
     args,
     path,
