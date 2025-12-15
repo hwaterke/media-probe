@@ -19,6 +19,7 @@ export const EXIF_TAGS = {
   LIVE_PHOTO_UUID_VIDEO: 'QuickTime:Keys:ContentIdentifier',
 
   ORIENTATION: 'EXIF:IFD0:Orientation',
+  COMPOSITE_ROTATION: 'Composite:Rotation',
   COMPOSITE_MEGAPIXELS: 'Composite:Megapixels',
 
   // Camera make and models

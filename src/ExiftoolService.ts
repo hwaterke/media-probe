@@ -323,6 +323,28 @@ export class ExiftoolService {
     })
   }
 
+  async setRotation(
+    path: string,
+    rotation: number,
+    options: {
+      override: boolean
+      ignoreMinorErrors: boolean
+      dryRun: boolean
+    }
+  ): Promise<void> {
+    if (rotation < 0 || rotation > 360) {
+      throw new Error(
+        `Invalid rotation provided ${rotation}. Please use a number between 0 and 360`
+      )
+    }
+
+    await this.exiftool({
+      args: ['-P', `-rotation=${rotation}`],
+      path,
+      options,
+    })
+  }
+
   async setGpsCoordinates(
     path: string,
     latitude: number,
