@@ -11,14 +11,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "luxon": "^3.6.1"
+    "luxon": "^3.7.2"
   },
   "devDependencies": {
     "@types/luxon": "^3",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "prettier": "^3",
     "typescript": "^5",
-    "vitest": "^2.0.2"
+    "vitest": "^4"
   },
   "engines": {
     "node": ">=20"
