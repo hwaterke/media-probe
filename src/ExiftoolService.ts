@@ -294,7 +294,7 @@ export class ExiftoolService {
         '-P',
         `-OffsetTime="${offset}"`,
         `-OffsetTimeOriginal="${offset}"`,
-        `-OffsetTimeDigitized="${offset}" "${path}"`,
+        `-OffsetTimeDigitized="${offset}"`,
       ],
       path,
       options,
